@@ -1,9 +1,10 @@
-#include<stdio.h>
-#include<omp.h>
-#include<string.h>
+#include <stdio.h>
+#include <omp.h>
+#include <string.h>
 #define COUNT 10
 
-char search_words[20][COUNT] = {"The","around","graphics","from","by","be","any","which","various","mount"};
+char search_words[20][COUNT] = {"The","around","graphics","from","by","be","any",
+	"which","various","mount"};
 long counts[COUNT];
 int line_c = 0;
 
@@ -75,16 +76,17 @@ int main(int argc, char** argv) {
 	printf("Enter number of threads: ");
 	scanf("%d", &nt);
 
-	for(i = 0; i < COUNT; i++) { counts[i] = 0; }
+	for(i = 0; i < COUNT; i++) counts[i] = 0;
 
 	double t = omp_get_wtime();
 	#pragma omp parallel for shared(counts, search_words) private(i) num_threads(nt)
-	for(i = 0; i < COUNT; i++) {
+	for(i = 0; i < COUNT; i++)
 		counts[i] = determine_count(argv[1], search_words[i], 1);
-	}
 
 	t = omp_get_wtime() - t;
 
-	for(i = 0; i < COUNT; i++) { printf("\n%s: %ld",search_words[i],counts[i]); }
+	for(i = 0; i < COUNT; i++)
+		printf("\n%s: %ld",search_words[i],counts[i]);
+
 	printf("\nTime Taken: %lf\n",t);
 }
